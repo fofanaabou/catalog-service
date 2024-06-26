@@ -2,14 +2,17 @@ package com.sinignaci.catalogservice.controller;
 
 import com.sinignaci.catalogservice.domain.Book;
 import com.sinignaci.catalogservice.service.IBook;
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
+@Validated
 @RestController
 @RequestMapping("/books")
 @RequiredArgsConstructor
@@ -28,7 +31,7 @@ public class BookController {
     }
 
     @PostMapping(consumes = {MediaType.APPLICATION_JSON_VALUE})
-    public ResponseEntity<Book> post(@RequestBody Book book) {
+    public ResponseEntity<Book> post(@Valid @RequestBody Book book) {
         return new ResponseEntity<>(iBook.addBookToCatalog(book), HttpStatus.CREATED);
     }
 
@@ -39,7 +42,7 @@ public class BookController {
     }
 
     @PutMapping("{isbn}")
-    public ResponseEntity<Book> put(@PathVariable String isbn, @RequestBody Book book) {
+    public ResponseEntity<Book> put(@PathVariable String isbn, @Valid @RequestBody Book book) {
         return ResponseEntity.ok(iBook.editBookDetails(isbn, book));
     }
 }
