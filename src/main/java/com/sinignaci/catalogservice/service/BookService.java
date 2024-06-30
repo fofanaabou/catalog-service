@@ -30,6 +30,8 @@ public class BookService implements IBook {
         if (bookRepository.existsByIsbn(book.isbn())) {
             throw new BookAlreadyExistsException(book.isbn());
         }
+        var newBook = bookRepository.save(book);
+        System.out.println(newBook);
         return bookRepository.save(book);
     }
 
