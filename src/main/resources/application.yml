@@ -7,3 +7,9 @@ server:
     threads:
       max: 20
       min-spare: 5
+
+polar:
+  greeting: Welcome to the local Book catalog
+learning:
+  backend:
+    languages: Java, Python, Go
