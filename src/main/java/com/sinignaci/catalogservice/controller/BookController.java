@@ -21,7 +21,7 @@ public class BookController {
     private final IBook iBook;
 
     @GetMapping
-    public ResponseEntity<List<Book>> get() {
+    public ResponseEntity<Iterable<Book>> get() {
         return ResponseEntity.ok(iBook.viewBookList());
     }
 

@@ -1,13 +1,11 @@
 package com.sinignaci.catalogservice.service;
 
-import com.sinignaci.catalogservice.persistence.BookRepository;
 import com.sinignaci.catalogservice.domain.Book;
 import com.sinignaci.catalogservice.handler.BookAlreadyExistsException;
 import com.sinignaci.catalogservice.handler.BookNotFoundException;
+import com.sinignaci.catalogservice.persistence.BookRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
-
-import java.util.List;
 
 @Service
 @RequiredArgsConstructor
@@ -16,7 +14,7 @@ public class BookService implements IBook {
     private final BookRepository bookRepository;
 
     @Override
-    public List<Book> viewBookList() {
+    public Iterable<Book> viewBookList() {
         return bookRepository.findAll();
     }
 
@@ -30,8 +28,6 @@ public class BookService implements IBook {
         if (bookRepository.existsByIsbn(book.isbn())) {
             throw new BookAlreadyExistsException(book.isbn());
         }
-        var newBook = bookRepository.save(book);
-        System.out.println(newBook);
         return bookRepository.save(book);
     }
 
