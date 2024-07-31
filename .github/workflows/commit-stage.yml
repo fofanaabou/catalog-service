@@ -37,9 +37,11 @@ jobs:
         with:
           sarif_file: ${{ steps.scan.outputs.sarif }}
       - name: Build, unit tests and integration tests
+        env:
+          SPRING_PROFILES_ACTIVE: integration
         run: |
           chmod +x gradlew
-          ./gradlew build -Dspring.profiles.active=${{ env.SPRING_PROFILES_ACTIVE }}
+          ./gradlew build
   package:
     name: Package and Publish
     if: ${{github.ref == 'refs/heads/main'}}
