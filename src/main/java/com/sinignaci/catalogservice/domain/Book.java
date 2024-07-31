@@ -31,6 +31,8 @@ public record Book(
         @Positive(message = "The book price must be greater than zero.")
         Double price,
 
+        String publisher,
+
         @CreatedDate
         LocalDateTime createdDate,
 
@@ -41,6 +43,6 @@ public record Book(
         int version
 ) {
         public static Book of(String isbn, String title, String author, Double price) {
-                return new Book(null, isbn, title, author, price, LocalDateTime.now(), LocalDateTime.now(), 0);
+                return new Book(null, isbn, title, author, price, "Maison edition",LocalDateTime.now(), LocalDateTime.now(), 0);
         }
 }

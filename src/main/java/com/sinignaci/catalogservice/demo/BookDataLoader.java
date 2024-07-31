@@ -22,7 +22,9 @@ public class BookDataLoader implements CommandLineRunner  {
                 "Lyra Silverstar", 9.90);
         var book2 =  Book.of("1234567892", "Polar Journey",
                 "Iorek Polarson", 12.90);
-        bookRepository.save(book1);
-        bookRepository.save(book2);
+        if (bookRepository.findByIsbn(book1.isbn()).isEmpty())
+            bookRepository.save(book1);
+        if (bookRepository.findByIsbn(book2.isbn()).isEmpty())
+            bookRepository.save(book2);
     }
 }
