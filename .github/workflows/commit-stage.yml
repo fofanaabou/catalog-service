@@ -5,8 +5,6 @@ env:
   REGISTRY: ghcr.io
   IMAGE_NAME: fofanaabou/catalog-service
   VERSION: latest
-  SPRING_PROFILES_ACTIVE: integration
-
 jobs:
   build:
     name: Build and Test
@@ -37,8 +35,6 @@ jobs:
         with:
           sarif_file: ${{ steps.scan.outputs.sarif }}
       - name: Build, unit tests and integration tests
-        env:
-          SPRING_PROFILES_ACTIVE: integration
         run: |
           chmod +x gradlew
           ./gradlew build

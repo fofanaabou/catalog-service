@@ -1,7 +1,9 @@
 package com.sinignaci.catalogservice.domain;
 
-import com.sinignaci.catalogservice.domain.Book;
-import jakarta.validation.*;
+import jakarta.validation.ConstraintViolation;
+import jakarta.validation.Validation;
+import jakarta.validation.Validator;
+import jakarta.validation.ValidatorFactory;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 
