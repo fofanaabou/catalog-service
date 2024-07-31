@@ -5,6 +5,7 @@ env:
   REGISTRY: ghcr.io
   IMAGE_NAME: fofanaabou/catalog-service
   VERSION: latest
+  SPRING_PROFILES_ACTIVE: integration
 
 jobs:
   build:
