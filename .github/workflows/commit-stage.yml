@@ -8,15 +8,15 @@ env:
 jobs:
   build:
     name: Build and Test
-    runs-on: ubuntu-22.04
+    runs-on: ubuntu-latest
     permissions:
       contents: read
       security-events: write
     steps:
       - name: checkout source code
-        uses: actions/checkout@v3
+        uses: actions/checkout@v4
       - name: Set upd JDK
-        uses: actions/setup-java@v3
+        uses: actions/setup-java@v4
         with:
           distribution: temurin
           java-version: 17
@@ -40,17 +40,19 @@ jobs:
           ./gradlew build
   package:
     name: Package and Publish
-    if: ${{github.ref == 'refs/heads/main'}}
+    if: ${{github.ref == 'refs/heads/master'}}
     needs: [ build ]
-    runs-on: ubuntu-22.04
+    runs-on: ubuntu-latest
     permissions:
       packages: write
+      contents: read
+      attestations: write
       security-events: write
     steps:
       - name: Checkout source code
-        uses: actions/checkout@v3
+        uses: actions/checkout@v4
       - name: Set upd JDK
-        uses: actions/setup-java@v3
+        uses: actions/setup-java@v4
         with:
           distribution: temurin
           java-version: 17
@@ -78,5 +80,6 @@ jobs:
         with:
           registry: ${{ env.REGISTRY }}
           username: ${{ github.actor }}
+          password: ${{ secrets.GITHUB_TOKEN }}
       - name: Publish container image
         run: docker push ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}:${{env.VERSION }}
