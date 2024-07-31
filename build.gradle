@@ -53,6 +53,16 @@ dependencies {
     testImplementation "org.testcontainers:postgresql:"
 }
 
+tasks.named('test', Test) {
+    useJUnitPlatform()
+
+    maxHeapSize = '1G'
+
+    testLogging {
+        events "passed"
+    }
+}
+
 dependencyManagement {
     imports {
         mavenBom "org.springframework.cloud:spring-cloud-dependencies:${springCloudVersion}"
@@ -64,10 +74,6 @@ hibernate {
     enhancement {
         enableAssociationManagement = false
     }
-}
-
-tasks.named('test') {
-    useJUnitPlatform()
 }
 
 bootBuildImage{
