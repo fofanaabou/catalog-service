@@ -39,7 +39,7 @@ jobs:
       - name: Build, unit tests and integration tests
         run: |
           chmod +x gradlew
-          ./gradlew build
+          ./gradlew build -Dspring.profiles.active=${{ SPRING_PROFILES_ACTIVE }}
   package:
     name: Package and Publish
     if: ${{github.ref == 'refs/heads/main'}}
