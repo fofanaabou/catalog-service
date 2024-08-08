@@ -5,8 +5,10 @@ import com.sinignaci.catalogservice.handler.BookAlreadyExistsException;
 import com.sinignaci.catalogservice.handler.BookNotFoundException;
 import com.sinignaci.catalogservice.persistence.BookRepository;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
+@Slf4j
 @Service
 @RequiredArgsConstructor
 public class BookService implements IBook {
@@ -15,6 +17,7 @@ public class BookService implements IBook {
 
     @Override
     public Iterable<Book> viewBookList() {
+        log.info("Find all books.");
         return bookRepository.findAll();
     }
 

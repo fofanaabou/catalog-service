@@ -38,6 +38,11 @@ jobs:
         run: |
           chmod +x gradlew
           ./gradlew build
+      - name: Set up Kubeconform
+        uses: bmuschko/setup-kubeconform@v1
+
+      - name: Validate manifests
+        run: kubeconform -summary -verbose k8s
   package:
     name: Package and Publish
     if: ${{github.ref == 'refs/heads/master'}}

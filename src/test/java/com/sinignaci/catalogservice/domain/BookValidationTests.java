@@ -23,23 +23,23 @@ public class BookValidationTests {
 
     @Test
     void whenAllFieldsCorrectThenValidationSucceeds() {
-        var book = Book.builder().isbn("9781234567897")
-                .title("Title")
-                .author("Author")
-                .price(9.90)
-                .build();
+        var book = craeateBook("9781234567897");
 
         Set<ConstraintViolation<Book>> violations = validator.validate(book);
         assertThat(violations).isEmpty();
     }
 
-    @Test
-    void whenIsbnDefinedButIncorrectThenValidationFails() {
-        var book = Book.builder().isbn("9781234ABD897")
+    private static Book craeateBook(String number) {
+        return Book.builder().isbn(number)
                 .title("Title")
                 .author("Author")
                 .price(9.90)
                 .build();
+    }
+
+    @Test
+    void whenIsbnDefinedButIncorrectThenValidationFails() {
+        var book = craeateBook("9781234ABD897");
 
         Set<ConstraintViolation<Book>> violations = validator.validate(book);
         assertThat(violations).hasSize(1);

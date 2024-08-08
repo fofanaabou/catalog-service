@@ -12,7 +12,7 @@ import org.springframework.data.annotation.Version;
 
 import java.time.LocalDateTime;
 
-@Builder
+@Builder(toBuilder = true)
 public record Book(
         @Id
         Long id,

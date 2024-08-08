@@ -16,7 +16,7 @@ spec:
     spec:
       containers:
         - name: catalog-service
-          image: ghcr.io/fofanaabou/catalog-service:latest
+          image: catalog-service
           imagePullPolicy: Always
           lifecycle:
             preStop:
@@ -36,19 +36,3 @@ spec:
               value: test-data
       imagePullSecrets:
         - name: regcred
----
-
-apiVersion: v1
-kind: Service
-metadata:
-  name: catalog-service
-  labels:
-    app: catalog-service
-spec:
-  type: ClusterIP
-  selector:
-    app: catalog-service
-  ports:
-    - protocol: TCP
-      port: 80
-      targetPort: 8081
