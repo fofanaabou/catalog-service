@@ -45,8 +45,7 @@ public class BookService implements IBook {
     }
 
     private static Book updateBook(Book book, Book existingBook) {
-        System.out.println("Hello");
-        return Book.builder()
+        return existingBook.toBuilder()
                 .isbn(existingBook.isbn())
                 .title(book.title())
                 .price(book.price())

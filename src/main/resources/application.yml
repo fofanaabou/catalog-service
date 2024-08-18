@@ -26,10 +26,9 @@ spring:
     timeout-per-shutdown-phase: 15
 
   flyway:
-    enabled: true
-    locations: classpath:db/migration
-    baseline-on-migrate: true
-    validate-on-migrate: true
+    url: jdbc:postgresql://localhost:5433/polar_db_catalog
+    user: postgres
+    password: postgres
 
 server:
   port: 8081
@@ -45,11 +44,7 @@ management:
     web:
       exposure:
         include: "*"
-flyway:
-  url: jdbc:postgresql://localhost:5433
-  schemas: polar_db_catalog
-  user: postgres
-  password: postgres
+
 learning:
   backend:
     languages: Java, Python, Go

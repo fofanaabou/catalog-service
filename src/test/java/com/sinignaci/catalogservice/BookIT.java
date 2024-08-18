@@ -12,7 +12,7 @@ import java.time.LocalDateTime;
 import static org.assertj.core.api.Assertions.assertThat;
 
 @ActiveProfiles("integration")
-public class BookIT extends CatalogServiceApplicationTests {
+class BookIT extends CatalogServiceApplicationTests {
 
 
     @Autowired
@@ -40,5 +40,59 @@ public class BookIT extends CatalogServiceApplicationTests {
                     assertThat(actualBook).isNotNull();
                     assertThat(actualBook.isbn()).isEqualTo(expectedBook.isbn());
                 });
+    }
+
+    @Test
+    void whenPutRequestThenBookUpdated() {
+        var bookIsbn = "1231231239";
+        var bookToCreate = Book.of(bookIsbn, "Title", "Author", 9.90).toBuilder().publisher("Polarsophia").build();
+        Book createdBook = webTestClient
+                .post()
+                .uri("/books")
+                .bodyValue(bookToCreate)
+                .exchange()
+                .expectStatus().isCreated()
+                .expectBody(Book.class).value(book -> assertThat(book).isNotNull())
+                .returnResult().getResponseBody();
+        var bookToUpdate = new Book(createdBook.id(), createdBook.isbn(), createdBook.title(), createdBook.author(), 7.95,
+                createdBook.publisher(), createdBook.createdDate(), createdBook.lastModifiedDate(), createdBook.version());
+
+        webTestClient
+                .put()
+                .uri("/books/" + bookIsbn)
+                .bodyValue(bookToUpdate)
+                .exchange()
+                .expectStatus().isOk()
+                .expectBody(Book.class).value(actualBook -> {
+                    assertThat(actualBook).isNotNull();
+                    assertThat(actualBook.price()).isEqualTo(bookToUpdate.price());
+                });
+    }
+
+    @Test
+    void whenDeleteRequestThenBookDeleted() {
+        var bookIsbn = "1231231233";
+        var bookToCreate = Book.of(bookIsbn, "Title", "Author", 9.90).toBuilder().publisher("Polarsophia").build();
+        webTestClient
+                .post()
+                .uri("/books")
+                .bodyValue(bookToCreate)
+                .exchange()
+                .expectStatus().isCreated();
+
+        webTestClient
+                .delete()
+                .uri("/books/" + bookIsbn)
+                .exchange()
+                .expectStatus().isNoContent();
+
+        webTestClient
+                .get()
+                .uri("/books/" + bookIsbn)
+                .exchange()
+                .expectStatus().isNotFound()
+                .expectBody(String.class).value(errorMessage ->
+                        assertThat(errorMessage).contains("The book with ISBN " + bookIsbn + " was not found.")
+                );
     }
 }
