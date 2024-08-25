@@ -29,6 +29,8 @@ spring:
     url: jdbc:postgresql://localhost:5433/polar_db_catalog
     user: postgres
     password: postgres
+    connect-retries: 10
+    connect-retries-interval: 100
 
 server:
   port: 8081
