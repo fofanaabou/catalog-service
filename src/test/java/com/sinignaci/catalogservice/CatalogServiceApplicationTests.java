@@ -8,5 +8,6 @@ class CatalogServiceApplicationTests {
 
     @Test
     void contextLoads() {
+        // Load context for texting
     }
 }

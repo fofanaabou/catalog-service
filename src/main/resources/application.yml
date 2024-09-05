@@ -1,6 +1,11 @@
 spring:
   application:
     name: catalog-service
+  security:
+    oauth2:
+      resourceserver:
+        jwt:
+          issuer-uri: http://localhost:8085/realms/PolarBookshop
   config:
     import: "optional:configserver:"
   cloud:
@@ -45,7 +50,7 @@ management:
   endpoints:
     web:
       exposure:
-        include: "*"
+        include: refresh
 
 learning:
   backend:
