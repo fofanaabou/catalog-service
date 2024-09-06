@@ -31,7 +31,7 @@ spring:
     timeout-per-shutdown-phase: 15
 
   flyway:
-    url: jdbc:postgresql://localhost:5433/polar_db_catalog
+    url: ${spring.datasource.url}
     user: postgres
     password: postgres
     connect-retries: 10
