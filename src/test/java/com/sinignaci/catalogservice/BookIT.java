@@ -64,8 +64,6 @@ class BookIT {
                 .lastModifiedDate(LocalDateTime.now())
                 .build();
 
-        System.out.println(isabelleToken.accessToken());
-
         webTestClient
                 .post()
                 .uri("/books")

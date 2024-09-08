@@ -3,12 +3,14 @@ package com.sinignaci.catalogservice.repository;
 import com.sinignaci.catalogservice.config.DataConfig;
 import com.sinignaci.catalogservice.domain.Book;
 import com.sinignaci.catalogservice.persistence.BookRepository;
+import org.jetbrains.annotations.NotNull;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.data.jdbc.DataJdbcTest;
 import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabase;
 import org.springframework.context.annotation.Import;
 import org.springframework.data.jdbc.core.JdbcAggregateTemplate;
+import org.springframework.security.test.context.support.WithMockUser;
 import org.springframework.test.context.ActiveProfiles;
 
 import java.util.Optional;
@@ -41,6 +43,7 @@ class BookRepositoryJdbcTests {
                 .filter(book -> book.isbn().equals(book1.isbn()) || book.isbn().equals(book2.isbn()))
                 .toList()).hasSize(2);
     }
+
     @Test
     void findBookByIsbnWhenExisting() {
         var bookIsbn = "1234567891";
@@ -89,5 +92,32 @@ class BookRepositoryJdbcTests {
         bookRepository.deleteByIsbn(bookIsbn);
 
         assertThat(jdbcAggregateTemplate.findById(persistedBook.id(), Book.class)).isNull();
+    }
+
+    @Test
+    void whenCreateBookNotAuthenticatedThenNoAuditMetadata() {
+        var createdBook = getBook();
+
+        assertThat(createdBook.createdBy()).isNull();
+        assertThat(createdBook.lastModifiedBy()).isNull();
+    }
+
+
+    @Test
+    @WithMockUser("john")
+    void whenCreateBookAuthenticatedThenAuditMetadata() {
+        var createdBook = getBook();
+
+        assertThat(createdBook.createdBy()).isEqualTo("john");
+        assertThat(createdBook.lastModifiedBy()).isEqualTo("john");
+
+    }
+
+    @NotNull
+    private Book getBook() {
+        var bookIsbn = "1234561241";
+        var bookToCreate = Book.of(bookIsbn, "Title", "Author", 12.90).toBuilder().publisher("Polarsophia").build();
+
+        return bookRepository.save(bookToCreate);
     }
 }
