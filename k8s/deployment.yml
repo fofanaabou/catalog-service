@@ -13,10 +13,14 @@ spec:
     metadata:
       labels:
         app: catalog-service
+      annotations:
+        prometheus.io/scrape: "true"
+        prometheus.io/path: /actuator/prometheus
+        prometheus.io/port: "8081"
     spec:
       containers:
         - name: catalog-service
-          image: ghcr.io/fofanaabou/catalog-service
+          image: ghcr.io/fofanaabou/catalog-service:latest
           imagePullPolicy: Always
           lifecycle:
             preStop:
@@ -30,9 +34,26 @@ spec:
           env:
             - name: BPL_JVM_THREAD_COUNT
               value: "50"
-            - name: SPRING_DATASOURCE_URL
-              value: jdbc:postgresql://polar-postgres/polar_db_catalog
             - name: SPRING_PROFILES_ACTIVE
               value: test-data
+          volumeMounts:
+            - name: catalog-config-volume
+              mountPath: /workspace/config
+          livenessProbe:
+            httpGet:
+              port: 8081
+              path: /actuator/health/liveness
+            initialDelaySeconds: 10
+            periodSeconds: 5
+          readinessProbe:
+            httpGet:
+              port: 8081
+              path: /actuator/health/liveness
+            initialDelaySeconds: 10
+            periodSeconds: 5
+      volumes:
+        - name: catalog-config-volume
+          configMap:
+            name: catalog-config
       imagePullSecrets:
         - name: registry-secret

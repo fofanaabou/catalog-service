@@ -29,6 +29,7 @@ public class BookService implements IBook {
     @Override
     public Book addBookToCatalog(Book book) {
         if (bookRepository.existsByIsbn(book.isbn())) {
+            log.error("The  book with isbn {} already exist", book.isbn());
             throw new BookAlreadyExistsException(book.isbn());
         }
         return bookRepository.save(book);

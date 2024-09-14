@@ -4,6 +4,7 @@ import com.sinignaci.catalogservice.domain.Book;
 import com.sinignaci.catalogservice.service.IBook;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
@@ -12,6 +13,7 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
+@Slf4j
 @Validated
 @RestController
 @RequestMapping("/books")
@@ -22,6 +24,7 @@ public class BookController {
 
     @GetMapping
     public ResponseEntity<Iterable<Book>> get() {
+        log.info("Fetching the list of books in the catalog");
         return ResponseEntity.ok(iBook.viewBookList());
     }
 
