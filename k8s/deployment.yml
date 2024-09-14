@@ -35,7 +35,7 @@ spec:
             - name: BPL_JVM_THREAD_COUNT
               value: "50"
             - name: SPRING_PROFILES_ACTIVE
-              value: test-data
+              value: test-data,prod
           volumeMounts:
             - name: catalog-config-volume
               mountPath: /workspace/config
