@@ -1,4 +1,4 @@
-name: commit stage
+name: Commit Stage
 on: push
 
 env:
